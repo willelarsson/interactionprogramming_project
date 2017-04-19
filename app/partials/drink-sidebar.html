@@ -1,28 +1,29 @@
 <div ng-controller="firebaseCtrl" class="col-xs-3 menu">
+
   <h1 class="menuHeadlines">My cabinet</h1>
+
   <div>
 
     <table class="table">
-    <th></th><th></th><th>#</th><th>Beverage</th><th>Cost</th><th></th><th></th>
+
+      <th></th><th></th><th>#</th><th>Beverage</th><th>Cost</th><th></th><th></th>
 
       <tr class="hover_this" ng-repeat="bev in bevmenu track by $index">
         <td><a ng-click="changeamount(bev, 2, true); setbev(bev)" class="glyphicon glyphicon-minus buttons"></a>
         </td>
         <td>
-<a ng-click="changeamount(bev, 3, true); setbev(bev)" class="glyphicon glyphicon-plus buttons"></a>
+          <a ng-click="changeamount(bev, 3, true); setbev(bev)" class="glyphicon glyphicon-plus buttons"></a>
         </td>
         <td>{{bev.amount}}</td>
-
         <td>{{bev.name}}</td>
-        <!-- <td>{{(bev.price.toFixed(2)| currency}}</td> -->
         <td>{{(bev.price*bev.amount).toFixed(2)}} SEK</td>
-        <td><a ng-controller="SearchCtrl"  ng-click="setbev(bev); setNumberOfGuest(0 ,bev.amount)" ng-href="#!/article/{{bev.article_id}}{{bev.amount}}" class="glyphicon glyphicon-eye-open buttons"></a></td>
+        <td><a ng-controller="SearchCtrl"  ng-click="setbev(bev); setNumberOfDrinks(0 ,bev.amount)" ng-href="#!/article/{{bev.article_id}}{{bev.amount}}" class="glyphicon glyphicon-eye-open buttons"></a></td>
         <td><a id="close" class="glyphicon glyphicon-remove buttons" ng-click="deletefromfire(bev, 1)"></a></td>
-
       </tr>
-      <th></th><th></th><th>Total Cost</th><th>{{(totalprice).toFixed(2)}} SEK</th><th></th><th></th><th></th>
-    </table>
 
+      <th></th><th></th><th>Total Cost</th><th>{{(totalprice).toFixed(2)}} SEK</th><th></th><th></th><th></th>
+
+    </table>
 
     <div align="center">
       <a href="#!/cabinet" class="btn hardbuttons">Go to cabinet!</a>

@@ -12,7 +12,7 @@ function($routeProvider) {
   }).
   when('/article/:article_id', {
     templateUrl: 'partials/article.html',
-    controller: 'articleCtrl'
+    controller: 'firebaseCtrl'
   }).
   when('/cabinet', {
     templateUrl: 'partials/cabinet.html',

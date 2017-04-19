@@ -1,33 +1,34 @@
 drinkPlannerApp.controller('firebaseCtrl',
 function ($scope,Fire,Drink, $routeParams, $cookieStore, $firebaseObject, $firebaseArray) {
 
-  // console.log("Inne i firebaseCtrl");
+
+  // ----------------- VARIABLES ----------------- //
 
   const rootRef = firebase.database().ref();
   $scope.pool = $firebaseArray(rootRef);
   $scope.totalprice = 0;
-
   $scope.bevmenu = [];
+  $scope.getPage = Drink.getCookiePage();
+  $scope.fire = Fire;
+
+
+
+
+
+    // ----------------- FUNCTIONS -----------------  //
+
+
   $scope.pool.$loaded().then(function(array) {
     for (var n=0; array.length>n; n++) {
       $scope.bevmenu.push(array[n]);
-
       $scope.totalprice += array[n].price * array[n].amount
-      // console.log(array[n]);
-      // console.log($scope.bevmenu)
     }
-
   })
 
-  $scope.getPage = Drink.getCookiePage();
-
-  $scope.fire = Fire;
 
   $scope.addtofire = function(selectedbev) {
-    // console.log("inne i addtofire")
-    // console.log(selectedbev)
     $scope.firebev = selectedbev.name;
-    $scope.fireamount = Drink.getNumberOfGuests();
+    $scope.fireamount = Drink.getNumberOfDrinks();
     $scope.fireprice = selectedbev.price
     $scope.fireid = selectedbev.article_id;
     $scope.firename2 = selectedbev.name_2;
@@ -45,70 +46,49 @@ function ($scope,Fire,Drink, $routeParams, $cookieStore, $firebaseObject, $fireb
     }
 
     $scope.fireVar = {
-        name: $scope.firebev,
-        name_2: $scope.firename2,
-        country: $scope.firecountry,
-        amount: $scope.fireamount,
-        price: $scope.fireprice,
-        alcohol: $scope.fireball,
-        volume: $scope.firevolume,
-        apk: $scope.fireapk,
-        price_per_liter: $scope.fireppl,
-        article_id: $scope.fireid,
-        start_date: $scope.firestart,
-        tags: $scope.firetype,
+      name: $scope.firebev,
+      name_2: $scope.firename2,
+      country: $scope.firecountry,
+      amount: $scope.fireamount,
+      price: $scope.fireprice,
+      alcohol: $scope.fireball,
+      volume: $scope.firevolume,
+      apk: $scope.fireapk,
+      price_per_liter: $scope.fireppl,
+      article_id: $scope.fireid,
+      start_date: $scope.firestart,
+      tags: $scope.firetype,
     }
-    // $scope.firetype2 = selectedbev.tags[1].name;
 
-    // for(var i=0; $scope.bevmenu.length>i; i++) {
-    //   if($scope.firebev === bevmenu[i].beverage) {
-    //     $scope.pool.$remove($scope.firebev)
-    //   }
-    // }
     $scope.fire.$add(
       $scope.fireVar
-      // {
-      // beverage: $scope.firebev,
-      // beverage_2: $scope.firename2,
-      // country: $scope.firecountry,
-      // amount: $scope.fireamount,
-      // price: $scope.fireprice,
-      // alcohol: $scope.fireball,
-      // volume: $scope.firevolume,
-      // apk: $scope.fireapk,
-      // price_per_liter: $scope.fireppl,
-      // article_id: $scope.fireid,
-      // start_date: $scope.firestart,
-      // tags: $scope.firetype,
-    // }
-  )
-  // return fireVar;
+    )
   }
-// function updateFire(amount) {
 
-$scope.updateFire = function(bev, amount, num) {
-  // var newPostKey = firebase.database().ref().push().key;
-  // console.log("kommer in iupdate")
-  for (var b = 0; $scope.pool.length>b; b++) {
-    if ($scope.pool[b].name === bev.name) {
-      $scope.deletefromfire($scope.pool[b], num);
+  $scope.updateFire = function(bev, amount, num) {
+
+    // This function updates the amount in of a given beverage in firebase.
+    // The beverage stored in firebase with the same name as bev is deleted, and
+    // then re-added with the right amount.
+    // bev is the beverage, amount the amount, and num is the indicator used in deletefromfire()
+
+    for (var b = 0; $scope.pool.length>b; b++) {
+      if ($scope.pool[b].name === bev.name) {
+        $scope.deletefromfire($scope.pool[b], num);
+      }
     }
+    bev.amount = amount;
+    $scope.fire.$add(bev);
   }
-  // $scope.deletefromfire(bev)
-  bev.amount = amount;
-  $scope.fire.$add(bev);
-}
 
-$scope.getPage = Drink.getCookiePage();
+  $scope.changeamount = function(bev, add, update) {
 
-$scope.resetGuest = function() {
-  Drink.resetGuest();
-}
+    // bev is the selected beverage
+    // add is the indicator of which type of button was pressed (1=delete, 2=minus, 3=plus)
+    // update is the indicator of from where the button was pressed, (true is from sidebar and false from article)
 
-$scope.changeamount = function(bev, add, update) {
-    if ( bev.amount === undefined) {
+    if (bev.amount === undefined) {
       bev.amount = -1;
-      console.log("Den är undefined, ändras till: " +bev.amount)
     }
 
     if (add === 3) {
@@ -122,70 +102,40 @@ $scope.changeamount = function(bev, add, update) {
       }
       $scope.bevmenu.push(bev)
     }
-
     else if (add===1) {
       $scope.deletefromfire(bev, 1)
     }
 
     if (update===true) {
-    $scope.updateFire(bev, bev.amount, add)
-}
-
-    // $scope.bevmenu.push(bev);
-
-    // DAGEN INNAN DEADLINE: Ni måste göra olika funktioner av +/- på article respektive sidemenu.
-    // Ni vill köra updatefire() när ni klickar i sidebar men inte från article. Fixa det här och ni är game.
-
+      $scope.updateFire(bev, bev.amount, add)
+    }
 
   }
-
-
-
-
-  $scope.setbev = function(bev) {
-
-    Drink.setSelectedBev(bev);
-  }
-
-
-// $scope.updateFire = function(amount) {
-//   // var newPostKey = firebase.database().ref().push().key;
-// console.log("kommer in iupdate")
-//   var updates = {};
-//   console.log($scope.fireVar);
-//     updates['/amount/'] = $scope.fireVar;
-//     return firebase.database().ref().update(updates);
-// }
-
 
   $scope.deletefromfire = function(bev, del) {
-    // console.log("delete from fire")
-    // console.log(bev);
+
+    // Deletes a given beverage from Firebase.
+    // bev is the selected beverage
+    // del is the indicator of what to do with the totalprice
+    // (1=delete the beverage's value in SEK as a whole, 2=delete the value of 1pcs of the beverage
+    // ,3=add the value of 1pcs of the beverage)
+
     $scope.pool.$remove(bev);
     elemPos = $scope.bevmenu.indexOf(bev);
     $scope.bevmenu.splice(elemPos, 1)
 
     if (del === 1) {
-    $scope.totalprice -= (bev.price*bev.amount);
+      $scope.totalprice -= (bev.price*bev.amount);
     }
     else if (del === 2) {
       if (bev.amount > 1) {
-      $scope.totalprice -= bev.price;
-    }
-    else {
-
-    }
+        $scope.totalprice -= bev.price;
+      }
+      else {
+      }
     }
     else if (del === 3) {
       $scope.totalprice += bev.price;
     }
   }
-  //
-  // $scope.updateAmount(bev, newAmount) {
-  //   var updates = {};
-  //   updates[] =
-  //
-  //   return firebase.database().ref().update(updates);
-  // }
-
 });

@@ -1,23 +1,24 @@
-<div style="overflow-y:scroll; height:1000px;" class="col-xs-9 article" ng-controller="articleCtrl">
+<div style="overflow-y:scroll; height:1000px;" class="col-xs-9 article">
+
 </br>
 
 <div id="articleimg">
   <img id="tags-img" src="{{getPage.tags[0].name}}.png">
 </div>
+
 <h1 class="atitle">
   <b>{{getPage.name}}</b>
 </br>
-
-<i style="font-size:60px;">{{getPage.name_2}}</i>
-
+  <i style="font-size:60px;">{{getPage.name_2}}</i>
 </h1>
 
 <div class="col-xs-5 col-xs-offset-1 article_table">
   <h3 id="article_h3">Facts</h3>
 </br>
+
 <table id="mediumtext" align="center">
   <tr>
-    <th>alcohol percentage</th>
+    <th>Alcohol percentage</th>
     <td>{{(getPage.alcohol*100).toFixed(1)}} %</td>
   </tr>
   <tr>
@@ -44,54 +45,43 @@
     <th>Type</th>
     <td>{{getPage.tags[0].name}}</td>
   </tr>
-
-  <!-- <tr>
-  <th>Systembolaget</th>
-  <td>[[LÄNK TILL SYSTEMET]]</td>
-</tr> -->
-
 </table>
-<a href="#!/search" ng-click="resetGuest()" class="btn hardbuttons ">Go back</a>
+
+<a href="#!/search" class="btn hardbuttons ">Go back</a>
 </div>
 
 <div class="col-xs-5 article_description">
-<!-- <h4 id="articleid">{{getPage.article_id}}</h4> -->
-<h3 id="article_h3">Description</h3>
+
+  <h3 id="article_h3">Description</h3>
 </br>
+
 <p id="smalltext">API:et lät oss inte komma åt description till objekten. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
   Ut enim ad minim veniam, quis nostrud exercitation ullamco carlus Roosus sugurius ma slickus commodo diqus. Duis aute irure dolor in
   reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
   Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
-  <div class="displayGuests">
+  <div class="articleNumbers">
+
     <div class="article_amount" align="left">
-      <!-- <div class="article_amount"> -->
+
       <h3 class="menuHeadlines" style="text-align:left;">Number of items</h3>
       <div class="bigNumber" style="margin-top:-30px;">
         {{getPage.amount}}
-        <!-- {{getVisibleNumber(getNumberOfGuest(), getPage.amount)}} -->
-
       </div>
-    <!-- </div> -->
 
       <div class="iconBox">
-
         <button class="sidebutton" ng-controller="firebaseCtrl" ng-click="changeamount(getPage, 3, false)"><span class="glyphicon glyphicon-plus"></span></button>
         <button class="sidebutton" ng-controller="firebaseCtrl" ng-click="changeamount(getPage, 2, false)"><span class="glyphicon glyphicon-minus"></span></button>
-        <!-- <button class="sidebutton" ng-click="setNumberOfGuest(getNumberOfGuest()+1, getbevamount(getPage))"><span class="glyphicon glyphicon-plus"></span></button>
-        <button class="sidebutton" ng-click="setNumberOfGuest(getNumberOfGuest()-1, getbevamount(getPage))"><span class="glyphicon glyphicon-minus"></span></button> -->
-        <!-- <button class="sidebutton" ng-click="setNumberOfAmount(getNumberOfAmount()-1, getbevamount(getPage))"><span class="glyphicon glyphicon-minus"></span></button>
-        <button class="sidebutton" ng-click="setNumberOfAmount(getNumberOfAmount()-1, getbevamount(getPage))"><span class="glyphicon glyphicon-minus"></span></button> -->
-
       </div>
-      <a href="#!/search" ng-app="drinkPlanner" ng-controller="firebaseCtrl" ng-click="updateFire(getPage, (getNumberOfGuest() + getPage.amount)); resetGuest();" class="btn hardbuttons article_add">Add to your cabinet</a>
-      <!-- <a href="#!/search" ng-controller="firebaseCtrl" ng-click="updateFire(getPage, getNumberOfGuest())" class="btn btn-default article_add">TEST!</a> -->
+
+      <a href="#!/search" ng-app="drinkPlanner" ng-controller="firebaseCtrl" ng-click="updateFire(getPage, (getNumberOfDrinks() + getPage.amount));" class="btn hardbuttons article_add">Add to your cabinet</a>
+      <!-- <a href="#!/search" ng-controller="firebaseCtrl" ng-click="updateFire(getPage, getNumberOfDrinks())" class="btn btn-default article_add">TEST!</a> -->
     </div>
-    <h2 id="article_h2">Price: <b>{{(getPage.price*(getNumberOfGuest() + getPage.amount)).toFixed(2)}} SEK</b></h2>
+
+    <h2 id="article_h2">Price: <b>{{(getPage.price*(getNumberOfDrinks() + getPage.amount)).toFixed(2)}} SEK</b></h2>
   </div>
 
 </div>
-
 
 </div>
 

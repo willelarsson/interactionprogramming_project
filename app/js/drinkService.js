@@ -1,27 +1,20 @@
-
 drinkPlannerApp.factory('Drink',function (Fire, $resource, $cookieStore, $firebaseObject) {
 
 
 
   // ----------------- VARIABLES ----------------- //
 
+
   var selectedBev = null;
   var numberOfGuest = 0;
-  // var bevAmount = 0;
   var url = "https://crossorigin.me/http://systemetapi.se/product?";
   var cookieSpecPage = null;
 
-  // ----------------- FUNCTIONS -----------------  //
 
-    //
-    // this.setBevAmount = function(num) {
-    //   console.log("vi är i setnumberOfGuests")
-    //
-    //   if (num > 0) {
-    //     bevAmount++;
-    //     // updateCookieGuests();
-    //
-    // }
+
+
+
+  // ----------------- FUNCTIONS -----------------  //
 
 
   this.getMenu = function () {
@@ -33,56 +26,43 @@ drinkPlannerApp.factory('Drink',function (Fire, $resource, $cookieStore, $fireba
   }
 
   this.getSelectedBev = function () {
-    // console.log("inne i getselectedbev med: ")
-    // console.log(selectedBev);
     return selectedBev;
   }
 
   this.setSelectedBev = function(bev) {
     cookieSpecPage = bev;
     if (cookieSpecPage.amount === undefined) {
-    cookieSpecPage.amount = 1;
-  }
-    // console.log(cookieSpecPage);
+      cookieSpecPage.amount = 1;
+    }
     updateCookie();
   }
 
   var updateCookie = function() {
-
-    // var cookieMenu = [];
     var cookiePage = cookieSpecPage;
-    console.log("Inne i updatecookie");
-    console.log("Här är cokiePage: " + cookiePage);
-
-    // $cookieStore.put('cookieMenu', cookieMenu);
     $cookieStore.put('cookiePage', cookiePage);
-
   }
 
- this.getbevAmount = function(bev) {
-   var bevAmount = 0
-   if (bev.amount === undefined) {
-     bevAmount = 0
-    //  bev.amount = 0;
-   }
-   else {
-   bevAmount = bev.amount;
- }
- return bevAmount;
- }
+  this.getbevAmount = function(bev) {
+    var bevAmount = 0
+    if (bev.amount === undefined) {
+      bevAmount = 0
+    }
+    else {
+      bevAmount = bev.amount;
+    }
+    return bevAmount;
+  }
 
   var updateCookieGuests = function() {
     $cookieStore.put('cookieGuests', numberOfGuest);
   }
 
   this.selectedBev = function(bev) {
-    console.log("inne i selectedBev")
     selectedBeverage = bev;
     updateCookie();
   }
 
-  this.setNumberOfGuests = function(num, amount) {
-    console.log("vi är i setnumberOfGuests")
+  this.setNumberOfDrinks = function(num, amount) {
 
     if (num+amount < 0) {
       numberOfGuest = -amount + (0-(num+amount));
@@ -94,15 +74,12 @@ drinkPlannerApp.factory('Drink',function (Fire, $resource, $cookieStore, $fireba
     }
   }
 
-  this.getNumberOfGuests = function() {
-    console.log("vi är i getnumberOfGuests")
+  this.getNumberOfDrinks = function() {
     return numberOfGuest;
   }
 
   this.BevSearch = $resource(url,{},{
     get: { isArray: true
-
-
     }
   });
 
@@ -112,13 +89,11 @@ drinkPlannerApp.factory('Drink',function (Fire, $resource, $cookieStore, $fireba
   }
 
   var _this = this;
+
   var init = function() {
     menu = [];
-    // var cookies = $cookieStore.get('cookieMenu');
     var cookiePage = $cookieStore.get("cookiePage");
     var cookiesGuests = $cookieStore.get('cookieGuests');
-
-    var uh = false;
 
     if (cookiePage !== undefined){
       cookieSpecPage = cookiePage;
@@ -127,8 +102,6 @@ drinkPlannerApp.factory('Drink',function (Fire, $resource, $cookieStore, $fireba
     if (cookiesGuests !== undefined){
       numberOfGuest = cookiesGuests;
     }
-
-
   }
 
   init();
