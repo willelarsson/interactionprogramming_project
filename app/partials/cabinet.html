@@ -1,0 +1,49 @@
+<h1 class="menuHeadlines" align="center">Your cabinet</h1>
+<div style="margin:10px;" ng-controller="SearchCtrl" align="center">
+  <a href="#!/search" style="background-color:#FDD332;" ng-click="resetGuest()" class="btn btn-default animated bounce infinite">Go back</a>
+</div>
+
+<div style="overflow-y:scroll; height:850px;">
+  <div ng-controller="firebaseCtrl" class="col-xs-12 cabinetbar" ng-repeat="bev in bevmenu" >
+
+
+    <div class="col-xs-4">
+
+      <h3><b>{{bev.amount}} st {{bev.name}}</b><i> {{bev.name_2}}</i></h3>
+      <table class="table">
+        <tr><th>Alcohol percentage: </th><td> {{(bev.alcohol*100).toFixed(1)}} %</td></tr>
+        <tr><th>Volume: </th><td> {{bev.volume*1000}} ml</td></tr>
+        <tr><th>APK: </th><td> {{bev.apk}} ml/kr</td></tr>
+        <tr><th>Country: </th><td> {{bev.country.name}}</td></tr>
+        <tr><th>Type: </th><td> {{bev.tags[0].name}}</td></tr>
+      </table>
+      <!-- <h4><b>Pris: </b> {{(bev.price).toFixed(2)}} SEK/st</h4> -->
+    </div>
+    <div class="col-xs-4">
+      <h3><b>1 pcs of {{bev.name}} equals <i>(in ml of alcohol)</i>:</b></h3>
+      <table class="table">
+
+        <!-- <tr><th>Ett glas motsvarar</th></tr> -->
+        <tr><th>{{((bev.alcohol * bev.volume)/(0.33*0.045)).toFixed(0)}} pcs</th><td> Beers (4.8%)</td></tr>
+        <tr><th>{{((bev.alcohol * bev.volume)/(0.15*0.13)).toFixed(0)}} pcs</th><td> Wineglasses (13%)</td></tr>
+        <tr><th>{{((bev.alcohol * bev.volume)/(0.04*0.40)).toFixed(0)}} pcs</th><td> 4cl shots (40%)</td></tr>
+        <tr><th>{{((bev.alcohol * bev.volume)/(0.06*0.40)).toFixed(0)}} pcs</th><td> 6cl coctails (40%)</td></tr>
+
+      </table>
+    </div>
+    <div class="col-xs-2">
+      <h3><b>Business:</b></h3>
+      <table class="table">
+
+        <tr><th>{{(bev.price).toFixed(2)}} SEK/pcs</th></tr>
+        <tr><th>{{(bev.price*bev.amount).toFixed(2)}} SEK for {{bev.amount}} pcs</th></tr>
+        <tr><th>{{((1/(bev.apk))*17).toFixed(2)}} SEK per alc. unit</th></tr>
+
+        </table>
+      </div>
+
+      <div class="col-xs-2">
+        <img id="tags-img" src="{{bev.tags[0].name}}.png">
+      </div>
+    </div>
+  </div>
